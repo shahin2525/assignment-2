@@ -2,8 +2,16 @@ import { Schema, model } from 'mongoose';
 import { Address, User, UserFullName } from './user/user.interface';
 
 const userFullNameSchema = new Schema<UserFullName>({
-  firstName: { type: String, required: [true, 'firstName is required '] },
-  lastName: { type: String, required: [true, 'lastName is required '] },
+  firstName: {
+    type: String,
+    required: [true, 'firstName is required '],
+    trim: true,
+  },
+  lastName: {
+    type: String,
+    required: [true, 'lastName is required '],
+    trim: true,
+  },
 });
 
 const addressSchema = new Schema<Address>({
@@ -21,7 +29,9 @@ const userSchema = new Schema<User>({
   userName: {
     type: String,
     required: [true, 'userName is required '],
+    maxlength: [20, 'Name can not more than allowed length is 20'],
     unique: true,
+    trim: true,
   },
   password: { type: String, required: [true, 'password is required '] },
   fullName: {

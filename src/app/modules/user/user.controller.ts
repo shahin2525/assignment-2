@@ -11,7 +11,11 @@ const createUser = async (req: Request, res: Response) => {
       data: result,
     });
   } catch (error) {
-    console.log(error);
+    res.status(500).json({
+      status: 'fail',
+      message: 'something went wrong',
+      error: error.message,
+    });
   }
 };
 
@@ -39,7 +43,11 @@ const getSingleUser = async (req: Request, res: Response) => {
       data: result,
     });
   } catch (error) {
-    console.log(error);
+    res.status(500).json({
+      status: 'fail',
+      message: 'something went wrong',
+      error: error.message,
+    });
   }
 };
 
