@@ -24,12 +24,18 @@ const userSchema = new Schema<User>({
     unique: true,
   },
   password: { type: String, required: [true, 'password is required '] },
-  fullName: userFullNameSchema,
+  fullName: {
+    type: userFullNameSchema,
+    required: [true, 'fullName is required '],
+  },
   age: { type: Number, required: [true, 'age is required '] },
   email: { type: String, required: [true, 'email is required '], unique: true },
   isActive: { type: Boolean, required: [true, 'isActive is required '] },
   hobbies: { type: [String], required: [true, 'hobbies is required '] },
-  address: addressSchema,
+  address: {
+    type: addressSchema,
+    required: [true, 'address is required '],
+  },
 });
 
 export const UserModel = model<User>('User', userSchema);
