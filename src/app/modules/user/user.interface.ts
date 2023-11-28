@@ -1,21 +1,30 @@
-export type UserFullName = {
+import { Model } from 'mongoose';
+
+export type TUserFullName = {
   firstName: string;
   lastName: string;
 };
-export type Address = {
+export type TAddress = {
   street: string;
   city: string;
   country: string;
 };
 
-export type User = {
+export type TUser = {
   userId: number;
   userName: string;
   password: string;
-  fullName: UserFullName;
+  fullName: TUserFullName;
   age: number;
   email: string;
   isActive: boolean;
   hobbies: string[];
-  address: Address;
+  address: TAddress;
 };
+
+export type UserMethods = {
+  isOrderExist(id: number): Promise<TUser | null>;
+};
+
+// eslint-disable-next-line @typescript-eslint/ban-types
+export type UserModel = Model<TUser, {}, UserMethods>;
