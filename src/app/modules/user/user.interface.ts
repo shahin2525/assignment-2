@@ -22,6 +22,8 @@ export type TUser = {
   address: TAddress;
 };
 
+// creating methods
+
 export type UserMethods = {
   isOrderExist(id: number): Promise<TUser | null>;
 };

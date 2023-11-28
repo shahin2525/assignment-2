@@ -54,6 +54,8 @@ const userSchema = new Schema<TUser, UserModel, UserMethods>({
   },
 });
 
+// creating statics method
+
 userSchema.methods.isOrderExist = async function (userId: number) {
   const orderExist = await User.findOne({ userId });
   return orderExist;
