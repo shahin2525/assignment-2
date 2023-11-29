@@ -6,6 +6,8 @@ import {
   UserMethods,
   UserModel,
 } from './user/user.interface';
+import bcrypt from 'bcrypt';
+import config from '../config';
 
 const userFullNameSchema = new Schema<TUserFullName>({
   firstName: {
@@ -39,7 +41,11 @@ const userSchema = new Schema<TUser, UserModel, UserMethods>({
     unique: true,
     trim: true,
   },
-  password: { type: String, required: [true, 'password is required '] },
+  password: {
+    type: String,
+    required: [true, 'password is required '],
+    maxlength: [20, 'password can not be more than 20 characters'],
+  },
   fullName: {
     type: userFullNameSchema,
     required: [true, 'fullName is required '],
@@ -54,6 +60,20 @@ const userSchema = new Schema<TUser, UserModel, UserMethods>({
   },
 });
 
+// pre middleware hook for using implement bcrypt
+userSchema.pre('save', async function (next) {
+  // eslint-disable-next-line @typescript-eslint/no-this-alias
+  const user = this;
+  user.password = await bcrypt.hash(
+    user.password,
+    Number(config.bcrypt_salt_rounds),
+  );
+  next();
+});
+// post middleware hook
+userSchema.post('save', function () {
+  console.log(this, 'post hook we saved our data');
+});
 // creating statics method
 
 userSchema.methods.isOrderExist = async function (userId: number) {
