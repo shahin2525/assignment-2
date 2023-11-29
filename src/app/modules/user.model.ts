@@ -58,6 +58,7 @@ const userSchema = new Schema<TUser, UserModel, UserMethods>({
     type: addressSchema,
     required: [true, 'address is required '],
   },
+  isDeleted: { type: Boolean, default: false },
 });
 
 // pre middleware hook for using implement bcrypt
@@ -71,8 +72,23 @@ userSchema.pre('save', async function (next) {
   next();
 });
 // post middleware hook
-userSchema.post('save', function () {
-  console.log(this, 'post hook we saved our data');
+userSchema.post('save', function (doc, next) {
+  doc.password = ' ';
+  next();
+});
+
+// query middleware
+userSchema.pre('find', function (next) {
+  this.find({ isDeleted: { $ne: true } });
+  next();
+});
+userSchema.pre('findOne', function (next) {
+  this.find({ isDeleted: { $ne: true } });
+  next();
+});
+userSchema.pre('aggregate', function (next) {
+  this.pipeline().unshift({ $match: { isDeleted: { $ne: true } } });
+  next();
 });
 // creating statics method
 

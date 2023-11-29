@@ -66,5 +66,28 @@ const getSingleUser = async (req: Request, res: Response) => {
     });
   }
 };
+const deleteUser = async (req: Request, res: Response) => {
+  try {
+    const { userId } = req.params;
+    const id = parseInt(userId);
+    const result = await UserServices.deleteUserFromDB(id);
+    res.status(200).json({
+      status: 'success',
+      message: 'User deleted successfully',
+      data: result,
+    });
+  } catch (error: any) {
+    res.status(500).json({
+      status: 'fail',
+      message: 'something went wrong',
+      error: error.message,
+    });
+  }
+};
 
-export const UserControllers = { createUser, getAllUsers, getSingleUser };
+export const UserControllers = {
+  createUser,
+  getAllUsers,
+  getSingleUser,
+  deleteUser,
+};

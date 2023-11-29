@@ -20,6 +20,7 @@ export type TUser = {
   isActive: boolean;
   hobbies: string[];
   address: TAddress;
+  isDeleted: boolean;
 };
 
 // creating methods

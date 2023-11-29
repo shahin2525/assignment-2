@@ -21,9 +21,14 @@ const getSingleUserFromDB = async (userId: number) => {
   const result = await User.findOne({ userId });
   return result;
 };
+const deleteUserFromDB = async (userId: number) => {
+  const result = await User.updateOne({ userId }, { isDeleted: true });
+  return result;
+};
 
 export const UserServices = {
   createUserIntoDB,
   getAllUsersFromDB,
   getSingleUserFromDB,
+  deleteUserFromDB,
 };

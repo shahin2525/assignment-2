@@ -22,6 +22,7 @@ const userValidationSchema = Joi.object({
   isActive: Joi.boolean().required(),
   hobbies: Joi.array().items(Joi.string()).required(),
   address: addressValidationSchema.required(),
+  isDeleted: Joi.boolean(),
 });
 
 export default userValidationSchema;
