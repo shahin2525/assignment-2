@@ -1,6 +1,7 @@
 import { Schema, model } from 'mongoose';
 import {
   TAddress,
+  TOrder,
   TUser,
   TUserFullName,
   UserMethods,
@@ -27,7 +28,11 @@ const addressSchema = new Schema<TAddress>({
   city: { type: String, required: [true, 'city is required '] },
   country: { type: String, required: [true, 'country is required '] },
 });
-
+const orderSchema = new Schema<TOrder>({
+  productName: { type: String, required: true },
+  price: { type: Number, required: true },
+  quantity: { type: Number, required: true },
+});
 const userSchema = new Schema<TUser, UserModel, UserMethods>({
   userId: {
     type: Number,
@@ -58,6 +63,7 @@ const userSchema = new Schema<TUser, UserModel, UserMethods>({
     type: addressSchema,
     required: [true, 'address is required '],
   },
+  orders: { type: [orderSchema], default: [] },
   isDeleted: { type: Boolean, default: false },
 });
 
@@ -92,6 +98,10 @@ userSchema.pre('aggregate', function (next) {
 });
 // creating statics method
 
+// userSchema.methods.isUserExist = async function (userId: number) {
+//   const userExist = await User.findOne({ userId });
+//   return userExist;
+// };
 userSchema.methods.isOrderExist = async function (userId: number) {
   const orderExist = await User.findOne({ userId });
   return orderExist;

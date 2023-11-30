@@ -1,5 +1,9 @@
 import { Model } from 'mongoose';
-
+export type TOrder = {
+  productName: string;
+  price: number;
+  quantity: number;
+};
 export type TUserFullName = {
   firstName: string;
   lastName: string;
@@ -20,6 +24,7 @@ export type TUser = {
   isActive: boolean;
   hobbies: string[];
   address: TAddress;
+  orders: TOrder[];
   isDeleted: boolean;
 };
 
