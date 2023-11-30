@@ -31,6 +31,7 @@ export type TUser = {
 // creating methods
 
 export type UserMethods = {
+  // eslint-disable-next-line no-unused-vars
   isOrderExist(id: number): Promise<TUser | null>;
 };
 
