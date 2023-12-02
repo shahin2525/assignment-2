@@ -42,14 +42,13 @@ const userSchema = new Schema<TUser, UserModel, UserMethods>({
   userName: {
     type: String,
     required: [true, 'userName is required '],
-    maxlength: [20, 'Name can not more than allowed length is 20'],
+
     unique: true,
     trim: true,
   },
   password: {
     type: String,
     required: [true, 'password is required '],
-    maxlength: [20, 'password can not be more than 20 characters'],
   },
   fullName: {
     type: userFullNameSchema,
@@ -63,8 +62,7 @@ const userSchema = new Schema<TUser, UserModel, UserMethods>({
     type: addressSchema,
     required: [true, 'address is required '],
   },
-  orders: { type: [orderSchema], default: [] },
-  isDeleted: { type: Boolean, default: false },
+  orders: { type: [orderSchema] },
 });
 
 // pre middleware hook for using implement bcrypt
@@ -83,28 +81,11 @@ userSchema.post('save', function (doc, next) {
   next();
 });
 
-// query middleware
-userSchema.pre('find', function (next) {
-  this.find({ isDeleted: { $ne: true } });
-  next();
-});
-userSchema.pre('findOne', function (next) {
-  this.find({ isDeleted: { $ne: true } });
-  next();
-});
-userSchema.pre('aggregate', function (next) {
-  this.pipeline().unshift({ $match: { isDeleted: { $ne: true } } });
-  next();
-});
 // creating statics method
 
-// userSchema.methods.isUserExist = async function (userId: number) {
-//   const userExist = await User.findOne({ userId });
-//   return userExist;
-// };
-userSchema.methods.isOrderExist = async function (userId: number) {
-  const orderExist = await User.findOne({ userId });
-  return orderExist;
+userSchema.methods.isUserExist = async function (userId: number) {
+  const isUserExist = await User.findOne({ userId });
+  return isUserExist;
 };
 
 export const User = model<TUser, UserModel>('User', userSchema);

@@ -24,15 +24,14 @@ export type TUser = {
   isActive: boolean;
   hobbies: string[];
   address: TAddress;
-  orders: TOrder[];
-  isDeleted: boolean;
+  orders: [TOrder];
 };
 
 // creating methods
 
 export type UserMethods = {
   // eslint-disable-next-line no-unused-vars
-  isOrderExist(id: number): Promise<TUser | null>;
+  isUserExist(id: number): Promise<TUser | null>;
 };
 
 // eslint-disable-next-line @typescript-eslint/ban-types
