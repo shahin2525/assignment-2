@@ -66,6 +66,7 @@ const getSingleUser = async (req: Request, res: Response) => {
           description: 'user not found',
         },
       });
+      return;
     }
     const result = await UserServices.getSingleUserFromDB(id);
     res.status(200).json({
@@ -97,11 +98,11 @@ const deleteUser = async (req: Request, res: Response) => {
       });
       return;
     }
-    const result = await UserServices.deleteUserFromDB(id);
+    await UserServices.deleteUserFromDB(id);
     res.status(200).json({
-      status: 'success',
+      success: true,
       message: 'User deleted successfully',
-      data: result,
+      data: null,
     });
   } catch (error: any) {
     res.status(500).json({
