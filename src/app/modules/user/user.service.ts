@@ -8,12 +8,8 @@ const doesUserExist = async (userId: number): Promise<boolean> => {
   return !!user;
 };
 const createUserIntoDB = async (user: TUser) => {
-  // const result = await User.create(user);
   const userData = new User(user);
 
-  // if (await userData.isUserExist(user.userId)) {
-  //   throw new Error('user already exists');
-  // }
   const result = await userData.save();
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars, no-unused-vars
@@ -22,13 +18,32 @@ const createUserIntoDB = async (user: TUser) => {
 };
 
 const getAllUsersFromDB = async () => {
-  const result = await User.find().select('-password');
+  const result = await User.find().select({
+    _id: 0,
+    userId: 0,
+    password: 0,
+    'fullName._id': 0,
+    isActive: 0,
+    hobbies: 0,
+    'address._id': 0,
+    orders: 0,
+    __v: 0,
+  });
 
   return result;
 };
 
 const getSingleUserFromDB = async (userId: number) => {
-  const result = await User.findOne({ userId }).select('-password');
+  const result = await User.findOne({ userId }).select({
+    _id: 0,
+
+    password: 0,
+    'fullName._id': 0,
+
+    'address._id': 0,
+    orders: 0,
+    __v: 0,
+  });
 
   return result;
 };
@@ -58,9 +73,6 @@ const updateUserFromDB = async (userId: number, userData: Partial<TUser>) => {
     throw new Error('Failed to fetch updated user data');
   }
   return {
-    success: true,
-    message: 'User updated successfully',
-
     userId: updatedUser.userId,
     username: updatedUser.username,
     fullName: updatedUser.fullName,
@@ -101,7 +113,9 @@ const addOrderFromDB = async (userId: number, orderData: TOrder) => {
 };
 
 const getAllOrdersById = async (userId: number) => {
-  const user = await User.findOne({ userId });
+  const user = await User.findOne({ userId }).select({
+    'orders._id': 0,
+  });
   // console.log('user or', user);
   const result = user?.orders;
 

@@ -23,7 +23,7 @@ const createUser = async (req: Request, res: Response) => {
     const result = await UserServices.createUserIntoDB(value);
     res.status(200).json({
       success: true,
-      message: 'user created successfully',
+      message: 'User created successfully',
       data: result,
     });
   } catch (error: any) {
@@ -143,6 +143,8 @@ const updateUser = async (req: Request, res: Response) => {
     const result = await UserServices.updateUserFromDB(id, value);
 
     res.status(200).json({
+      success: true,
+      message: 'User updated successfully',
       data: result,
     });
   } catch (error: any) {
