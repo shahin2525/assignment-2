@@ -1,4 +1,5 @@
 // import mongoose from 'mongoose';
+import { UpdateWriteOpResult } from 'mongoose';
 import { User } from '../user.model';
 import { TOrder, TUser } from './user.interface';
 
@@ -10,20 +11,25 @@ const createUserIntoDB = async (user: TUser) => {
   // const result = await User.create(user);
   const userData = new User(user);
 
-  if (await userData.isUserExist(user.userId)) {
-    throw new Error('user already exists');
-  }
+  // if (await userData.isUserExist(user.userId)) {
+  //   throw new Error('user already exists');
+  // }
   const result = await userData.save();
-  return result;
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars, no-unused-vars
+  const { password, ...userWithOutPassword } = result.toObject();
+  return userWithOutPassword;
 };
 
 const getAllUsersFromDB = async () => {
-  const result = await User.find();
+  const result = await User.find().select('-password');
+
   return result;
 };
 
 const getSingleUserFromDB = async (userId: number) => {
-  const result = await User.findOne({ userId });
+  const result = await User.findOne({ userId }).select('-password');
+
   return result;
 };
 
@@ -33,12 +39,37 @@ const updateUserFromDB = async (userId: number, userData: Partial<TUser>) => {
     throw new Error('user not found');
   }
 
-  const result = await User.updateOne({ userId: userId }, userData, {
-    new: true,
-    runValidators: true,
-  });
+  const updateResult: UpdateWriteOpResult = await User.updateOne(
+    { userId: userId },
+    userData,
+    {
+      new: true,
+      runValidators: true,
+    },
+  );
 
-  return result;
+  if (updateResult.modifiedCount !== 1) {
+    throw new Error('Failed to update user');
+  }
+
+  const updatedUser = await User.findOne({ userId }).select('-password');
+
+  if (!updatedUser) {
+    throw new Error('Failed to fetch updated user data');
+  }
+  return {
+    success: true,
+    message: 'User updated successfully',
+
+    userId: updatedUser.userId,
+    username: updatedUser.username,
+    fullName: updatedUser.fullName,
+    age: updatedUser.age,
+    email: updatedUser.email,
+    isActive: updatedUser.isActive,
+    hobbies: updatedUser.hobbies,
+    address: updatedUser.address,
+  };
 };
 
 const deleteUserFromDB = async (userId: number) => {

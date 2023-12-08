@@ -38,6 +38,7 @@ const createUser = async (req: Request, res: Response) => {
 const getAllUsers = async (req: Request, res: Response) => {
   try {
     const result = await UserServices.getAllUsersFromDB();
+
     res.status(200).json({
       success: true,
       message: 'Users fetched successfully',
@@ -140,11 +141,8 @@ const updateUser = async (req: Request, res: Response) => {
     }
 
     const result = await UserServices.updateUserFromDB(id, value);
-    console.log(result);
-    // const result = await UserServices.updateUserFromDB(id,user);
+
     res.status(200).json({
-      status: 'success',
-      message: 'User updated successfully',
       data: result,
     });
   } catch (error: any) {

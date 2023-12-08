@@ -21,7 +21,7 @@ const userFullNameSchema = Joi.object<TUserFullName>({
 
 const userUpdateValidationSchema = Joi.object({
   userId: Joi.number().optional(),
-  userName: Joi.string().optional().max(20),
+  username: Joi.string().optional(),
   password: Joi.string().optional(),
   fullName: userFullNameSchema.optional(),
   age: Joi.number().optional(),

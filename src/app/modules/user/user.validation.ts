@@ -1,8 +1,8 @@
 import Joi from 'joi';
 
 const userFullNameValidationSchema = Joi.object({
-  firstName: Joi.string().trim().required().max(20).min(1),
-  lastName: Joi.string().trim().required().max(20).min(1),
+  firstName: Joi.string().trim().required(),
+  lastName: Joi.string().trim().required(),
 });
 
 const addressValidationSchema = Joi.object({
@@ -14,7 +14,7 @@ const addressValidationSchema = Joi.object({
 // Define Joi schema for the User model
 const userValidationSchema = Joi.object({
   userId: Joi.number().integer().required(),
-  userName: Joi.string().required().trim().max(20).min(1),
+  username: Joi.string().required().trim().max(20).min(1),
   password: Joi.string().required(),
   fullName: userFullNameValidationSchema.required(),
   age: Joi.number().integer().required(),

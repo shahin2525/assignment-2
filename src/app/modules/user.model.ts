@@ -39,7 +39,7 @@ const userSchema = new Schema<TUser, UserModel, UserMethods>({
     required: [true, 'userId is required '],
     unique: true,
   },
-  userName: {
+  username: {
     type: String,
     required: [true, 'userName is required '],
 

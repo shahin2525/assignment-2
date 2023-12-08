@@ -16,7 +16,7 @@ export type TAddress = {
 
 export type TUser = {
   userId: number;
-  userName: string;
+  username: string;
   password: string;
   fullName: TUserFullName;
   age: number;
